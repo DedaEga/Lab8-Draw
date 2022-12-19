@@ -1,15 +1,40 @@
 ﻿#include <iostream>
 #include <vector>
 #include <windows.h>
+#include <fstream>
+#include <chrono>
+
 
 using namespace std;
+void GetInput(int& x) {
+    fstream out;
+    string path = "logs.txt";
+    auto now = std::chrono::system_clock::now();
+    std::time_t end_time = std::chrono::system_clock::to_time_t(now);
+    out.open(path, fstream::in | fstream::out | fstream::app);
+#pragma warning(suppress : 4996)
+    out << std::ctime(&end_time) << "Pol'zovatel' vvel: " << x << endl;
+}
+void GetOutput(string& outp) {
+    fstream out;
+    string path = "logs.txt";
+    auto now = std::chrono::system_clock::now();
+    std::time_t end_time = std::chrono::system_clock::to_time_t(now);
+    out.open(path, fstream::in | fstream::out | fstream::app);
+#pragma warning(suppress : 4996)
+    out << std::ctime(&end_time) << outp << endl;
+}
 
 int main()
 {
     // Объявляем переменную N и считываем ее значение с клавиатуры
     int N;
-    cout << "Enter N: ";
+    string outp;
+    outp = "Enter N: ";
+    GetOutput(outp);
+    cout << outp;
     cin >> N;
+    GetInput(N);
     // Инициализируем вектор, который будет хранить вытянутые бочонки
     vector <bool> drawn;;
     for (int i = 0; i < N; i++)
@@ -26,7 +51,9 @@ int main()
             r = rand() % N;
 
         // Вытаскиваем бочонок с номером r
-        cout << "Drawn: " << r + 1 << endl;
+        outp = "Drawn: "+ to_string(r + 1);
+        cout << outp << endl;
+        GetOutput(outp);
 
         // Отмечаем бочонок как вытянутый
         drawn[r] = true;
